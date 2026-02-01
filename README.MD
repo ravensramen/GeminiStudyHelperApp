@@ -8,3 +8,14 @@ sudo apt install python3-full python3-venv
 python3 -m venv venv
 source venv/bin/activate
 pip install -U google-genai
+
+//What I'm Making:
+Computer Science Assignment Helper App
+Uses AI to help students understand project requirements
+Gives guidance, not answers!
+
+//Trying Streamlit as the framework
+
+streamlit run your_script.py [-- script args]
+or 
+python -m streamlit run your_script.py
