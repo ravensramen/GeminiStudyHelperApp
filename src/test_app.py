@@ -16,8 +16,23 @@ client = genai.Client(api_key=api_key)
 st.title("Welcome to Image Generator")
 
 #text box prompt
-prompt = st.text_input("Enter an image prompt")
+prompt = st.text_input("Enter a prompt")
 
 #testing button 
-if st.button("Click me"):
-    st.write("Somethiing was clicked")
+if st.button("Generate Response"):
+    if prompt:
+        with st.spinner("Generating response..."):
+            try:
+                # Call Gemini 3 API
+                response = client.models.generate_content(
+                    model="gemini-3-5-sonnet",
+                    contents=prompt
+                )
+                
+                # Display the response
+                st.success("Response generated!")
+                st.write(response.text)
+            except Exception as e:
+                st.error(f"Error generating response: {str(e)}")
+    else:
+        st.warning("Please enter a prompt first")
