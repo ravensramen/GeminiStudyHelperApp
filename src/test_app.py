@@ -15,25 +15,38 @@ client = genai.Client(api_key=api_key)
 #title of streamlit site
 st.title("Welcome, test out the newest Gemini Model")
 
-#user inputs info to prompt
-prompt = st.text_input("What would you like help with today?") #message displayed in text box
+#test audio features of gemini
+audio_file = st.audio_input("Input a recording")
 
 #Program response if button clicked
 if st.button("Generate Response"):  
-    if prompt: #If text_input received, pass prompt to gemini model
+    if audio_file: #If audio received, pass prompt to gemini model
         with st.spinner("Generating response..."): #load spinning wheel
             try: #use try block in case API doesn't work
                
+                # Convert audio bytes to Part object with mime type
+                audio_part = types.Part(
+                    inline_data=types.Blob(
+                        mime_type="audio/wav",
+                        data=audio_file.getvalue()
+                    )
+                )
+                
                 response = client.models.generate_content( #call generate content function based on prompt
                     model="gemini-3-flash-preview",
-                    contents=prompt
+                    contents=[audio_part],
+                    config=types.GenerateContentConfig(
+                        thinking_config=types.ThinkingConfig(
+                            thinking_level=types.ThinkingLevel.LOW #test out gemini thinking level feature
+                        )
+                    )
                 )
                 
                 # Display the response
                 st.success("Response: ")
                 st.write(response.text) #write response from gemini response
 
-                
+
             except Exception as e: #if gemini fails, run this block
                 st.error(f"Error generating response: {str(e)}") #str(e) details error specs
     else:
