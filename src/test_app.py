@@ -37,17 +37,29 @@ if st.button("Generate Response"):
                     contents=[audio_part],
                     config=types.GenerateContentConfig(
                         thinking_config=types.ThinkingConfig(
-                            thinking_level=types.ThinkingLevel.LOW #test out gemini thinking level feature
+                            thinking_level=types.ThinkingLevel.HIGH
                         )
                     )
                 )
+
+                #testing image generation with gemini based on audio description
+                image_prompt = response.text  # Use audio description as image prompt
+                response2 = client.models.generate_content(
+                    model="gemini-3-pro-image-preview",
+                    contents=[image_prompt]
+                )
+
                 
-                # Display the response
+                # display the response of audio prompt
                 st.success("Response: ")
                 st.write(response.text) #write response from gemini response
 
+                #display generated image
+                if response2.candidates[0].content.parts:
+                    image_data = response2.candidates[0].content.parts[0].inline_data.data
+                    st.image(image_data, caption="Generated Image from Audio")
 
-            except Exception as e: #if gemini fails, run this block
+            except Exception as e: #if any ai model fails, run this block
                 st.error(f"Error generating response: {str(e)}") #str(e) details error specs
     else:
         st.warning("Please enter a prompt first")
