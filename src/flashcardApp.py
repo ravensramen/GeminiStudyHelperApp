@@ -93,6 +93,24 @@ if st.button("Generate Notes & Flashcards"):
                     with st.expander(card["question"]):
                         st.write(card["answer"])
 
+                #export notes
+                export_text = f"# {data['title']}\n\n"
+                export_text += f"# {data['title']}\n\n"
+                export_text += "## Key Points\n"
+                for p in data["key_points"]: #append each key point in the export file
+                    export_text += f"- {p}\n" #organized as bullet points
+                
+                export_text += "\n## Flashcards\n"
+                for c in data["flashcards"]: #iterate through each flashcard in the set, append to export file
+                    export_text += f"Q: {c['question']}\nA: {c['answer']}\n\n"
+                
+                st.download_button( #download button
+                    label="Download my Notes",
+                    data=export_text,
+                    file_name="my_study_notes.txt",
+                    mime="text/plain"
+                )
+
             #catch if error occured and print error info
             except Exception as e:
                 st.error(f"Error generating from audio: {e}")
