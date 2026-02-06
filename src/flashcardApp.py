@@ -13,7 +13,7 @@ api_key = st.secrets["GEMINI_API_KEY"]
 client = genai.Client(api_key=api_key)
 
 #title of streamlit site
-st.title("Voice to Study Notes App")
+st.title("Voice → Study Notes")
 
 #write main program prompt
 st.write("Talk about what you learned in lecture today, Gemini can turn it into structured"
@@ -21,7 +21,7 @@ st.write("Talk about what you learned in lecture today, Gemini can turn it into 
 )
 
 #take in audio file from user
-audio_file = st.audio_input("Record your topic")
+audio_file = st.audio_input("Record what you learned today:")
 
 
 #Button interactivity 
@@ -75,7 +75,7 @@ if st.button("Generate Notes & Flashcards"):
                     )
                 )
 
-                #parse JSON op
+                #parse gemini response 
                 raw_text = response.candidates[0].content.parts[0].text
                 data = json.loads(raw_text)
 
