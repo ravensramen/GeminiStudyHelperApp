@@ -94,7 +94,7 @@ if st.button("Generate Notes & Flashcards"):
                         st.write(card["answer"])
 
                 #export notes
-                export_text = f" {data['title']}\n\n"
+                export_text = f"{data['title']}\n\n"
                 export_text += "Key Points\n"
                 for p in data["key_points"]: #append each key point in the export file
                     export_text += f"- {p}\n" #organized as bullet points
